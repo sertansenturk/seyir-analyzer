@@ -6,10 +6,7 @@ class AudioSeyirAnalyzer():
     _version = "0.1"
     _slug = "makamseyir"
 
-    def __init__(self, frame_size = 20.0, hop_ratio = 0.5, kernel_width = 7.5, 
-        step_size=7.5):
-        self.frame_size = frame_size  # seconds
-        self.hop_size = hop_ratio * frame_size  # seconds
+    def __init__(self, kernel_width = 7.5, step_size=7.5):
         self.kernel_width = kernel_width
         self.step_size = step_size
 
@@ -18,22 +15,20 @@ class AudioSeyirAnalyzer():
     def getSettings(self):
       citation = u"Bozkurt"
       
-      return {'frameSize':self.frame_size, 'hopSize': self.hop_size, 
-                'kernel_width': self.kernel_width, 'step_size': self.step_size,
-                'citation': citation}
+      return {'kernel_width': self.kernel_width, 'step_size': self.step_size,
+              'citation': citation}
 
-    def analyze(self, pitch): 
-        pitch = np.array(pitch)
-        tt = pitch[:,0]
-        pp = pitch[:,1]
-
-        t_st = 0
+    def compute_seyir_features_per_interval(self, pp, tt, t_intervals):
         seyir_features = []
-        while t_st < tt[-1]:
-            p_sliced = [p for t, p in zip(tt, pp) 
-                if t_st+self.frame_size > t >= t_st]
+        maxdur = 0
+        for ti in t_intervals:
+            dur = ti[1] - ti[0]
+            if dur > maxdur:
+                maxdur = dur
 
-            t_interval = [t_st, min([t_st+self.frame_size, tt[-1]])]
+        for ti in t_intervals:
+            p_sliced = [p for t, p in zip(tt, pp) 
+                if ti[1] > t >= ti[0]]
 
             p_cent = PitchDistribution.hz_to_cent(p_sliced, self.dummy_ref_freq)
             pd = PitchDistribution.generate_pd(p_cent, ref_freq=self.dummy_ref_freq,
@@ -46,7 +41,7 @@ class AudioSeyirAnalyzer():
             # normalize to 1 (instead of the area under the curve)
             maxval = max(pd.vals)
             numRatio = float(len(p_cent))/len(p_sliced) # ratio of number of samples
-            timeRatio = (t_interval[1]-t_interval[0])/self.frame_size
+            timeRatio = (ti[1]-ti[0])/maxdur
             pd.vals = pd.vals*numRatio*timeRatio/maxval
 
             # get the stable pitches, i.e. peaks
@@ -58,11 +53,24 @@ class AudioSeyirAnalyzer():
             avpitch = PitchDistribution.cent_to_hz(np.mean(p_cent), self.dummy_ref_freq)
 
             seyir_features.append({'pitch_distribution':pd,'stable_pitches':stable_pitches,
-                'average_pitch':avpitch, 'time_interval':t_interval})
-
-            t_st += self.hop_size
+                'average_pitch':avpitch, 'time_interval':ti})
 
         return seyir_features
+
+    def analyze(self, pitch, frame_size = 20.0, hop_ratio = 0.5):
+        hop_size = frame_size*hop_ratio
+
+        pitch = np.array(pitch)
+        tt = pitch[:,0]
+        pp = pitch[:,1]
+
+        tb = 0
+        t_intervals = []
+        while tb < tt[-1]:
+            t_intervals.append([tb, min([tb+frame_size, tt[-1]])])
+            tb += hop_size
+
+        return self.compute_seyir_features_per_interval(pp, tt, t_intervals)
 
     @staticmethod
     def plot(seyir_features, plot_average_pitch=True, plot_stable_pitches=True,
@@ -94,5 +102,7 @@ class AudioSeyirAnalyzer():
 
         plt.xlim([seyir_features[0]['time_interval'][0], 
             seyir_features[-1]['time_interval'][1]])
+        plt.xlabel('Time (sec)')
+        plt.ylabel('Frequency (Hz)')
 
         plt.show()

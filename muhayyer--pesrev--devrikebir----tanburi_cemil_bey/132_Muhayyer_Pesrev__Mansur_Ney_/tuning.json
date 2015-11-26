@@ -1,0 +1,158 @@
+{
+	"scoreInformed": {
+		"scaleDegree": [
+			[
+				{
+					"noteSymbol": "G4",
+					"frequency": 443.836396,
+					"theoretical": -203.7735849,
+					"performed": -210,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "A4",
+					"frequency": 891.5266832,
+					"theoretical": 0,
+					"performed": 0,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "B4b1",
+					"frequency": 846.0871536,
+					"theoretical": 181.1320755,
+					"performed": 165,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "C5",
+					"frequency": 488.2188432,
+					"theoretical": 294.3396226,
+					"performed": 285,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "C5#4",
+					"frequency": 984.9346312,
+					"theoretical": 384.9056604,
+					"performed": 392.4056604,
+					"isSwitched": 0
+				},
+				{
+					"noteSymbol": "D5",
+					"frequency": 951.7730476,
+					"theoretical": 498.1132075,
+					"performed": 502.5,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "E5",
+					"frequency": 939.4065652,
+					"theoretical": 701.8867925,
+					"performed": 712.5,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "F5",
+					"frequency": 523.26,
+					"theoretical": 792.4528302,
+					"performed": 787.5,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "F5#1",
+					"frequency": 556.7511739,
+					"theoretical": 815.0943396,
+					"performed": 787.5,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "F5#4",
+					"frequency": 1046.52,
+					"theoretical": 883.0188679,
+					"performed": 885,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "G5",
+					"frequency": 1113.502348,
+					"theoretical": 996.2264151,
+					"performed": 1005,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "G5#4",
+					"frequency": 593.3066602,
+					"theoretical": 1086.792453,
+					"performed": 1094.292453,
+					"isSwitched": 0
+				},
+				{
+					"noteSymbol": "A5b4",
+					"frequency": 1188.749079,
+					"theoretical": 1109.433962,
+					"performed": 1116.933962,
+					"isSwitched": 0
+				},
+				{
+					"noteSymbol": "A5",
+					"frequency": 669.8221005,
+					"theoretical": 1200,
+					"performed": 1207.5,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "B5b5",
+					"frequency": 699.4776585,
+					"theoretical": 1290.566038,
+					"performed": 1298.066038,
+					"isSwitched": 0
+				},
+				{
+					"noteSymbol": "B5b4",
+					"frequency": 699.4776585,
+					"theoretical": 1313.207547,
+					"performed": 1320.707547,
+					"isSwitched": 0
+				},
+				{
+					"noteSymbol": "B5b1",
+					"frequency": 740.0013886,
+					"theoretical": 1381.132075,
+					"performed": 1380,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "C6",
+					"frequency": 393.1358634,
+					"theoretical": 1494.339623,
+					"performed": 1485,
+					"isSwitched": 1
+				},
+				{
+					"noteSymbol": "C6#4",
+					"frequency": 793.1138506,
+					"theoretical": 1584.90566,
+					"performed": 1592.40566,
+					"isSwitched": 0
+				},
+				{
+					"noteSymbol": "D6",
+					"frequency": 835.0938586,
+					"theoretical": 1698.113208,
+					"performed": 1705.613208,
+					"isSwitched": 0
+				}
+			]
+		],
+		"deviationStats": {
+			"values": [0,-7.5,"_NaN_",16.13207547,1.132075472,"_NaN_","_NaN_",9.339622642,"_NaN_",9.339622642,"_NaN_",-4.386792453,"_NaN_",-10.61320755,4.952830189,27.59433962,-1.981132075,6.226415094,-8.773584906,"_NaN_"],
+			"absoluteMean": 3.189404935,
+			"absoluteStd": 10.79167795,
+			"absoluteMedian": 1.132075472
+		},
+		"unit": "cent",
+		"octaveWrapped": 0,
+		"tonicSymbol": "A4",
+		"source": "./data2/muhayyer--pesrev--devrikebir----tanburi_cemil_bey/132_Muhayyer_Pesrev__Mansur_Ney_/132_Muhayyer_Pesrev__Mansur_Ney_.mp3"
+	}
+}
