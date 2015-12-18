@@ -31,29 +31,34 @@ class AudioSeyirAnalyzer():
                 if ti[1] > t >= ti[0]]
 
             p_cent = PitchDistribution.hz_to_cent(p_sliced, self.dummy_ref_freq)
-            pd = PitchDistribution.generate_pd(p_cent, ref_freq=self.dummy_ref_freq,
-                kernel_width=self.kernel_width, step_size=self.step_size)
 
-            # reconvert to Hz
-            pd.bins = PitchDistribution.cent_to_hz(pd.bins, pd.ref_freq)
-            pd.ref_freq = []
+            if p_cent.size == 0:  # silence 
+                seyir_features.append({'pitch_distribution':[],'stable_pitches':[],
+                    'average_pitch':np.nan, 'time_interval':ti})
+            else:
+                pd = PitchDistribution.generate_pd(p_cent, ref_freq=self.dummy_ref_freq,
+                    kernel_width=self.kernel_width, step_size=self.step_size)
 
-            # normalize to 1 (instead of the area under the curve)
-            maxval = max(pd.vals)
-            numRatio = float(len(p_cent))/len(p_sliced) # ratio of number of samples
-            timeRatio = (ti[1]-ti[0])/maxdur
-            pd.vals = pd.vals*numRatio*timeRatio/maxval
+                # reconvert to Hz
+                pd.bins = PitchDistribution.cent_to_hz(pd.bins, pd.ref_freq)
+                pd.ref_freq = []
 
-            # get the stable pitches, i.e. peaks
-            peak_idx, peak_vals = pd.detect_peaks()
-            stable_pitches = [{'frequency':pd.bins[idx], 'value':val} 
-                for idx, val in zip(peak_idx, peak_vals)]
+                # normalize to 1 (instead of the area under the curve)
+                maxval = max(pd.vals)
+                numRatio = float(len(p_cent))/len(p_sliced) # ratio of number of samples
+                timeRatio = (ti[1]-ti[0])/maxdur
+                pd.vals = pd.vals*numRatio*timeRatio/maxval
 
-            # get the average pitch
-            avpitch = PitchDistribution.cent_to_hz(np.mean(p_cent), self.dummy_ref_freq)
+                # get the stable pitches, i.e. peaks
+                peak_idx, peak_vals = pd.detect_peaks()
+                stable_pitches = [{'frequency':pd.bins[idx], 'value':val} 
+                    for idx, val in zip(peak_idx, peak_vals)]
 
-            seyir_features.append({'pitch_distribution':pd,'stable_pitches':stable_pitches,
-                'average_pitch':avpitch, 'time_interval':ti})
+                # get the average pitch
+                avpitch = PitchDistribution.cent_to_hz(np.mean(p_cent), self.dummy_ref_freq)
+
+                seyir_features.append({'pitch_distribution':pd,'stable_pitches':stable_pitches,
+                    'average_pitch':avpitch, 'time_interval':ti})
 
         return seyir_features
 
@@ -80,19 +85,21 @@ class AudioSeyirAnalyzer():
             time_starts = [sf['time_interval'][0] for sf in seyir_features]
             min_time = min(np.diff(time_starts))
             for sf in seyir_features:
-                # plot the distributions through time
-                yy = sf['pitch_distribution'].bins
-                tt = sf['time_interval'][0] + sf['pitch_distribution'].vals * min_time*2
-                plt.plot(tt, yy)
+                if sf['pitch_distribution']:  # ignore silent frame
+                    # plot the distributions through time
+                    yy = sf['pitch_distribution'].bins
+                    tt = sf['time_interval'][0] + sf['pitch_distribution'].vals * min_time*2
+                    plt.plot(tt, yy)
 
         for sf in seyir_features:
-            t_st = sf['time_interval'][0]
-            max_peak = max([sp['value'] for sp in sf['stable_pitches']])
-            for sp in sf['stable_pitches']:
-                clr = 'r' if sp['value'] == max_peak else 'b'
-                # map the values from 0-1 to 1-6
-                marker_thickness = sp['value']*5+1 
-                plt.plot(t_st, sp['frequency'], 'o', color = clr, ms=marker_thickness)
+            if sf['stable_pitches']:  # ignore silent frame
+                t_st = sf['time_interval'][0]
+                max_peak = max([sp['value'] for sp in sf['stable_pitches']])
+                for sp in sf['stable_pitches']:
+                    clr = 'r' if sp['value'] == max_peak else 'b'
+                    # map the values from 0-1 to 1-6
+                    marker_thickness = sp['value']*5+1 
+                    plt.plot(t_st, sp['frequency'], 'o', color = clr, ms=marker_thickness)
 
         if plot_average_pitch:
             tt = [sf['time_interval'][0] for sf in seyir_features]
