@@ -57,7 +57,7 @@ Now you can install the rest of the dependencies:
 
 Authors
 -------
-Sertan Senturk
+Sertan Şentürk
 contact@sertansenturk.com
 
 Acknowledgements
