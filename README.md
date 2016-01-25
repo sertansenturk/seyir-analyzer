@@ -2,6 +2,8 @@
 
 Tools to analyse the seyir (melodic progression) of scores and audio recordings of makam music
 
+Introduction
+=======
 The repository implements the melody progression analysis methods explained in the paper.
 
 _B. Bozkurt, "Computational analysis of overall melodic progression for Turkish Makam Music", in "Penser l’improvisation" edited by Mondher Ayari, pp. 289-298, ISBN: 9782752102485, 2015, Delatour France, Sampzon._
