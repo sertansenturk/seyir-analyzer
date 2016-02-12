@@ -113,5 +113,3 @@ class AudioSeyirAnalyzer():
             seyir_features[-1]['time_interval'][1]])
         plt.xlabel('Time (sec)')
         plt.ylabel('Frequency (Hz)')
-
-        plt.show()
