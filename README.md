@@ -15,9 +15,9 @@ Later score analysis and joint audio-score analysis (from alignment) will be add
 Usage
 =======
 ```python
-from seyiranalyzer import audioseyiranalyzer
+from seyiranalyzer.AudioSeyirAnalyzer import AudioSeyirAnalyzer
 
-audioSeyirAnalyzer = audioseyiranalyzer.AudioSeyirAnalyzer()
+audioSeyirAnalyzer = AudioSeyirAnalyzer()
 seyir_features = audioSeyirAnalyzer.analyze(pitch, frame_size = frame_size, hop_ratio = hop_ratio)
 
 audioSeyirAnalyzer.plot(seyir_features)
