@@ -10,4 +10,9 @@ setup(name='seyiranalyzer',
       description='Tools to analyse the seyir (melodic progression) of scores and audio recordings of makam music',
       url='http://sertansenturk.com',
       packages=['seyiranalyzer'],
+      install_requires=[
+          "numpy",
+          "scipy",
+          "matplotlib"
+      ],
 )
