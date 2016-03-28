@@ -89,8 +89,11 @@ class AudioSeyirAnalyzer(object):
         return seyir_features
 
     @staticmethod
-    def plot(seyir_features, plot_average_pitch=True, plot_stable_pitches=True,
-             plot_distribution=False):
+    def plot(seyir_features, ax=None, plot_average_pitch=True,
+             plot_stable_pitches=True, plot_distribution=False):
+
+        if ax is None:
+            fig, ax = plt.subplots(1, 1)
 
         if plot_distribution:
             time_starts = [sf['time_interval'][0] for sf in seyir_features]
@@ -101,7 +104,7 @@ class AudioSeyirAnalyzer(object):
                     yy = sf['pitch_distribution'].bins
                     tt = (sf['time_interval'][0] +
                           sf['pitch_distribution'].vals * min_time * 2)
-                    plt.plot(tt, yy)
+                    ax.plot(tt, yy)
 
         if plot_stable_pitches:
             num_frames = len(seyir_features)
@@ -115,16 +118,16 @@ class AudioSeyirAnalyzer(object):
                         # map the values from 0-1 to 1-6
                         marker_thickness = ((sp['value'] * 5 + 1) * 100 /
                                             num_frames)
-                        plt.plot(t_st, sp['frequency'], 'o',
+                        ax.plot(t_st, sp['frequency'], 'o',
                                  color=clr, ms=marker_thickness)
 
         if plot_average_pitch:
             tt = [sf['time_interval'][0] for sf in seyir_features]
             pp = [sf['average_pitch'] for sf in seyir_features]
 
-            plt.plot(tt, pp, color='k', linewidth=3)
+            ax.plot(tt, pp, color='k', linewidth=3)
 
-        plt.xlim([seyir_features[0]['time_interval'][0],
+        ax.set_xlim([seyir_features[0]['time_interval'][0],
                   seyir_features[-1]['time_interval'][1]])
-        plt.xlabel('Time (sec)')
-        plt.ylabel('Frequency (Hz)')
+        ax.set_xlabel('Time (sec)')
+        ax.set_ylabel('Frequency (Hz)')
