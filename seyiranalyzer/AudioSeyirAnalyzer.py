@@ -73,7 +73,8 @@ class AudioSeyirAnalyzer(object):
 
                 # get the stable pitches, i.e. peaks
                 peak_idx, peak_vals = pd.detect_peaks()
-                stable_pitches = [{'frequency': pd.bins[idx], 'value': val}
+                stable_pitches = [{'frequency': float(pd.bins[idx]),
+                                   'value': float(val)}
                                   for idx, val in zip(peak_idx, peak_vals)]
 
                 # get the average pitch
