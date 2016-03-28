@@ -20,8 +20,8 @@ class AudioSeyirAnalyzer(object):
         return {'kernel_width': self.kernel_width, 'step_size': self.step_size,
                 'citation': self.citation}
 
-    def analyze(self, pitch, frame_size=20.0, hop_ratio=0.5):
-        hop_size = frame_size * hop_ratio
+    def analyze(self, pitch, frame_dur=20.0, hop_ratio=0.5):
+        hop_size = frame_dur * hop_ratio
 
         pitch = np.array(pitch)
         tt = pitch[:, 0]
@@ -30,7 +30,7 @@ class AudioSeyirAnalyzer(object):
         tb = 0
         t_intervals = []
         while tb < tt[-1]:
-            t_intervals.append([tb, min([tb + frame_size, tt[-1]])])
+            t_intervals.append([tb, min([tb + frame_dur, tt[-1]])])
             tb += hop_size
 
         return self._compute_seyir_features_per_interval(pp, tt, t_intervals)
