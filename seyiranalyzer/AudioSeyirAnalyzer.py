@@ -119,7 +119,7 @@ class AudioSeyirAnalyzer(object):
                         marker_thickness = ((sp['value'] * 5 + 1) * 100 /
                                             num_frames)
                         ax.plot(t_st, sp['frequency'], 'o',
-                                 color=clr, ms=marker_thickness)
+                                color=clr, ms=marker_thickness)
 
         if plot_average_pitch:
             tt = [sf['time_interval'][0] for sf in seyir_features]
@@ -128,6 +128,6 @@ class AudioSeyirAnalyzer(object):
             ax.plot(tt, pp, color='k', linewidth=3)
 
         ax.set_xlim([seyir_features[0]['time_interval'][0],
-                  seyir_features[-1]['time_interval'][1]])
+                     seyir_features[-1]['time_interval'][1]])
         ax.set_xlabel('Time (sec)')
         ax.set_ylabel('Frequency (Hz)')
