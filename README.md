@@ -18,7 +18,7 @@ Usage
 from seyiranalyzer.AudioSeyirAnalyzer import AudioSeyirAnalyzer
 
 audioSeyirAnalyzer = AudioSeyirAnalyzer()
-seyir_features = audioSeyirAnalyzer.analyze(pitch, frame_size = frame_size, hop_ratio = hop_ratio)
+seyir_features = audioSeyirAnalyzer.analyze(pitch, frame_dur = frame_dur, hop_ratio = hop_ratio)
 
 audioSeyirAnalyzer.plot(seyir_features)
 ```
