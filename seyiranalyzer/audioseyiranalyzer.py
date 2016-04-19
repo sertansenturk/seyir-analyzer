@@ -101,15 +101,18 @@ class AudioSeyirAnalyzer(object):
             AudioSeyirAnalyzer._stable_pitch_plotter(ax, seyir_features)
 
         if plot_average_pitch:
-            tt = [sf['time_interval'][0] for sf in seyir_features]
-            pp = [sf['average_pitch'] for sf in seyir_features]
-
-            ax.plot(tt, pp, color='k', linewidth=3)
+            AudioSeyirAnalyzer._average_pitch_plotter(ax, seyir_features)
 
         ax.set_xlim([seyir_features[0]['time_interval'][0],
                      seyir_features[-1]['time_interval'][1]])
         ax.set_xlabel('Time (sec)')
         ax.set_ylabel('Frequency (Hz)')
+
+    @staticmethod
+    def _average_pitch_plotter(ax, seyir_features):
+        tt = [sf['time_interval'][0] for sf in seyir_features]
+        pp = [sf['average_pitch'] for sf in seyir_features]
+        ax.plot(tt, pp, color='k', linewidth=3)
 
     @staticmethod
     def _stable_pitch_plotter(ax, seyir_features):

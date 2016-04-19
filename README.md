@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sertansenturk/seyiranalyzer.svg?branch=master)](https://travis-ci.org/sertansenturk/seyiranalyzer) [![Code Climate](https://codeclimate.com/github/sertansenturk/seyiranalyzer/badges/gpa.svg)](https://codeclimate.com/github/sertansenturk/seyiranalyzer)
+
 # seyir-analyzer
 
 Tools to analyse the seyir (melodic progression) of scores and audio recordings of makam music
