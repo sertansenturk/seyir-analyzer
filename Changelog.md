@@ -1,4 +1,4 @@
-#### seyiranalyzer v1.1
+#### seyiranalyzer v1.1.0
  - Improvements in the plot method
  - Minor refactorings
 
