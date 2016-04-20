@@ -1,4 +1,4 @@
 numpy
 scipy
 matplotlib
-git+https://github.com/altugkarakurt/ModeTonicEstimation.git#egg=modetonicestimation
+git+https://github.com/altugkarakurt/morty.git@v1.0.0#egg=morty

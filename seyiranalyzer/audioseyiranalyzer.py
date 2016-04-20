@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import matplotlib.pyplot as plt
-from morty.PitchDistribution import PitchDistribution
-from morty.Converter import Converter
+from morty.pitchdistribution import PitchDistribution
+from morty.converter import Converter
 
 
 class AudioSeyirAnalyzer(object):
