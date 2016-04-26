@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from morty.pitchdistribution import PitchDistribution
 from morty.converter import Converter
+import json
+import copy
 
 
 class AudioSeyirAnalyzer(object):
@@ -86,6 +88,47 @@ class AudioSeyirAnalyzer(object):
         p_cent = p_cent[~np.isnan(p_cent)]
         p_cent = p_cent[~np.isinf(p_cent)]  # shouldnt exist but anyways...
         return p_cent, p_sliced
+
+    @staticmethod
+    def to_json(seyir_features, json_out=None):
+        seyir_copy = copy.deepcopy(seyir_features)
+        AudioSeyirAnalyzer.serialize(seyir_copy)
+
+        if json_out is None:
+            return json.dumps(seyir_copy)
+        else:
+            json.dump(seyir_copy, open(json_out, 'w'))
+
+    @staticmethod
+    def from_json(json_in):
+        try:
+            seyir_features = json.load(open(json_in, 'r'))
+        except IOError:
+            seyir_features = json.loads(json_in)
+
+        AudioSeyirAnalyzer.deserialize(seyir_features)
+
+        return seyir_features
+
+    @staticmethod
+    def serialize(seyir_features):
+        for sf in seyir_features:
+            try:  # convert pitch distribution objects to dicts
+                sf['pitch_distribution'] = sf[
+                    'pitch_distribution'].to_dict()
+            except AttributeError:  # empty pitch distribution
+                assert not sf['pitch_distribution'], \
+                    'non-empty, non-object pitch distribution encountered'
+
+    @staticmethod
+    def deserialize(seyir_features):
+        for sf in seyir_features:
+            try:
+                sf['pitch_distribution'] = PitchDistribution.from_dict(
+                    sf['pitch_distribution'])
+            except AttributeError:  # empty pitch distribution
+                assert not sf['pitch_distribution'], \
+                    'non-empty, non-object pitch distribution encountered'
 
     @staticmethod
     def plot(seyir_features, ax=None, plot_average_pitch=True,
