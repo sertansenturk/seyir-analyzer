@@ -57,6 +57,10 @@ The algorithm uses several modules in Essentia. Follow the [instructions](essent
 Now you can install the rest of the dependencies:
 
     pip install -r requirements
+    
+Changelog
+---------
+ - Updated the PitchDistribution requirement (morty)
 
 Authors
 -------
