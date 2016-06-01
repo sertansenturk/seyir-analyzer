@@ -51,7 +51,7 @@ class AudioSeyirAnalyzer(object):
             else:
                 pd = PitchDistribution.from_cent_pitch(
                     p_cent, ref_freq=self._dummy_ref_freq,
-                    smooth_factor=self.kernel_width, step_size=self.step_size)
+                    kernel_width=self.kernel_width, step_size=self.step_size)
 
                 # reconvert to Hz
                 pd.cent_to_hz()
