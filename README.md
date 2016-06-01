@@ -20,7 +20,8 @@ Usage
 from seyiranalyzer.audioseyiranalyzer import AudioSeyirAnalyzer
 
 audioSeyirAnalyzer = AudioSeyirAnalyzer()
-seyir_features = audioSeyirAnalyzer.analyze(pitch, frame_dur = frame_dur, hop_ratio = hop_ratio)
+seyir_features = audioSeyirAnalyzer.analyze(pitch, frame_dur=frame_dur, 
+                                            hop_ratio=hop_ratio)
 
 audioSeyirAnalyzer.plot(seyir_features)
 ```
