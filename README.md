@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/sertansenturk/seyiranalyzer.svg?branch=master)](https://travis-ci.org/sertansenturk/seyiranalyzer) [![Code Climate](https://codeclimate.com/github/sertansenturk/seyiranalyzer/badges/gpa.svg)](https://codeclimate.com/github/sertansenturk/seyiranalyzer)
+[![Build Status](https://travis-ci.org/sertansenturk/seyiranalyzer.svg?branch=master)](https://travis-ci.org/sertansenturk/seyiranalyzer) [![Code Climate](https://codeclimate.com/github/sertansenturk/seyiranalyzer/badges/gpa.svg)](https://codeclimate.com/github/sertansenturk/seyiranalyzer) [![GitHub version](https://badge.fury.io/gh/sertansenturk%2Fseyiranalyzer.svg)](https://badge.fury.io/gh/sertansenturk%2Fseyiranalyzer) [![DOI](https://zenodo.org/badge/21104/sertansenturk/seyiranalyzer.svg)](https://zenodo.org/badge/latestdoi/21104/sertansenturk/seyiranalyzer)
 
 # seyir-analyzer
 
