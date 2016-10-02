@@ -1,3 +1,7 @@
+#### seyiranalyzer v1.2
+ - Starting the first frame "centered" around zero seconds
+ - Time-stamps are generated according to the center rather than the start of the frames in plotting
+
 #### seyiranalyzer v1.1.1
  - Updated the PitchDistribution requirement (morty)
 
