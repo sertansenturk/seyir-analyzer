@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='seyiranalyzer',
-      version='1.2',
+      version='1.2.0',
       author='Sertan Senturk',
       author_email='contact AT sertansenturk DOT com',
       license='agpl 3.0',
