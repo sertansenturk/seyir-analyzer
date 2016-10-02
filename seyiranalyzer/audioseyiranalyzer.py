@@ -1,4 +1,21 @@
 # -*- coding: utf-8 -*-
+
+# Copyright 2016 Sertan Şentürk
+#
+# This file is part of seyiranalyzer
+#
+# seyiranalyzer is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation (FSF), either version 3 of the License,
+# or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program.  If not, see http://www.gnu.org/licenses/
 import numpy as np
 import matplotlib.pyplot as plt
 from morty.pitchdistribution import PitchDistribution
@@ -29,25 +46,32 @@ class AudioSeyirAnalyzer(object):
         tt = pitch[:, 0]
         pp = pitch[:, 1]
 
-        tb = 0
+        # start the first frame "centered" around 0 seconds
+        tb = -frame_dur/2.0
         t_intervals = []
+        t_center = []
         while tb < tt[-1]:
-            t_intervals.append([tb, min([tb + frame_dur, tt[-1]])])
+            # make sure the frame boundaries do not exceed the audio time
+            t_intervals.append([max([0.0, tb]), min([tb + frame_dur, tt[-1]])])
+            t_center.append(min([max([tb + frame_dur / 2.0, 0]), tt[-1]]))
             tb += hop_size
 
-        return self._compute_seyir_features_per_interval(pp, tt, t_intervals)
+        return self._compute_seyir_features_per_interval(pp, tt, t_intervals,
+                                                         t_center)
 
-    def _compute_seyir_features_per_interval(self, pp, tt, t_intervals):
+    def _compute_seyir_features_per_interval(self, pp, tt, t_intervals,
+                                             t_center):
         seyir_features = []
         maxdur = max(ti[1] - ti[0] for ti in t_intervals)
 
-        for ti in t_intervals:
+        for ti, tc in zip(t_intervals, t_center):
             p_cent, p_sliced = self._slice_pitch(pp, ti, tt)
 
             if p_cent.size == 0:  # silence
                 seyir_features.append(
-                    {'pitch_distribution': [], 'stable_pitches': [],
-                     'average_pitch': np.nan, 'time_interval': ti})
+                    {'pitch_distribution': [], 'average_pitch': np.nan,
+                     'stable_pitches': [], 'time_interval': ti,
+                     'time_center': tc})
             else:
                 pd = PitchDistribution.from_cent_pitch(
                     p_cent, ref_freq=self._dummy_ref_freq,
@@ -74,9 +98,9 @@ class AudioSeyirAnalyzer(object):
                                                self._dummy_ref_freq)
 
                 seyir_features.append(
-                    {'pitch_distribution': pd,
-                     'stable_pitches': stable_pitches,
-                     'average_pitch': avpitch, 'time_interval': ti})
+                    {'pitch_distribution': pd, 'average_pitch': avpitch,
+                     'stable_pitches': stable_pitches, 'time_interval': ti,
+                     'time_center': tc})
 
         return seyir_features
 
@@ -86,7 +110,7 @@ class AudioSeyirAnalyzer(object):
                                       min_freq=20.0)
         # pop nan and inf
         p_cent = p_cent[~np.isnan(p_cent)]
-        p_cent = p_cent[~np.isinf(p_cent)]  # shouldnt exist but anyways...
+        p_cent = p_cent[~np.isinf(p_cent)]  # shouldn't exist, but anyways...
         return p_cent, p_sliced
 
     @staticmethod
@@ -153,7 +177,7 @@ class AudioSeyirAnalyzer(object):
 
     @staticmethod
     def _average_pitch_plotter(ax, seyir_features):
-        tt = [sf['time_interval'][0] for sf in seyir_features]
+        tt = [sf['time_center'] for sf in seyir_features]
         pp = [sf['average_pitch'] for sf in seyir_features]
         ax.plot(tt, pp, color='k', linewidth=3)
 
@@ -162,7 +186,7 @@ class AudioSeyirAnalyzer(object):
         num_frames = len(seyir_features)
         for sf in seyir_features:
             if sf['stable_pitches']:  # ignore silent frame
-                t_st = sf['time_interval'][0]
+                t_center = sf['time_center']
                 max_peak = max([sp['value']
                                 for sp in sf['stable_pitches']])
                 for sp in sf['stable_pitches']:
@@ -170,17 +194,17 @@ class AudioSeyirAnalyzer(object):
                     # map the values from 0-1 to 1-6
                     marker_thickness = ((sp['value'] * 5 + 1) * 100 /
                                         num_frames)
-                    ax.plot(t_st, sp['frequency'], 'o',
+                    ax.plot(t_center, sp['frequency'], 'o',
                             color=clr, ms=marker_thickness)
 
     @staticmethod
     def _pitch_distrib_plotter(ax, seyir_features):
-        time_starts = [sf['time_interval'][0] for sf in seyir_features]
-        min_time = min(np.diff(time_starts))
+        time_centers = [sf['time_center'][0] for sf in seyir_features]
+        min_time = min(np.diff(time_centers))
         for sf in seyir_features:
             if sf['pitch_distribution']:  # ignore silent frame
                 # plot the distributions through time
                 yy = sf['pitch_distribution'].bins
-                tt = (sf['time_interval'][0] +
+                tt = (sf['time_center'] +
                       sf['pitch_distribution'].vals * min_time * 2)
                 ax.plot(tt, yy)
