@@ -47,7 +47,7 @@ class AudioSeyirAnalyzer(object):
         pp = pitch[:, 1]
 
         # start the first frame "centered" around 0 seconds
-        tb = -frame_dur/2.0
+        tb = -frame_dur / 2.0
         t_intervals = []
         t_center = []
         while tb < tt[-1]:
